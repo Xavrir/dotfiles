@@ -25,9 +25,3 @@ cd ~/dotfiles
 ```
 
 The script backs up any existing files to `~/.dotfiles-backup/` before linking.
-
-## Notes
-
-Secrets, caches, browser profiles, and app data are intentionally excluded.
-The `omarchy` framework's bundled backgrounds/themes images are not included —
-reinstall Omarchy for those; only personal theme selection and hooks are kept.
