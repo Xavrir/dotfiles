@@ -1,6 +1,6 @@
 # dotfiles
 
-Personal dotfiles backup — Arch Linux + Hyprland (Omarchy).
+Personal dotfiles backup Arch Linux + Hyprland.
 
 ## Contents
 
