@@ -1,0 +1,139 @@
+@import "../omarchy/current/theme/waybar.css";
+
+@define-color pill_bg alpha(@background, 0.88);
+@define-color pill_border alpha(@foreground, 0.08);
+@define-color muted_fg alpha(@foreground, 0.46);
+@define-color soft_fg alpha(@foreground, 0.72);
+@define-color hover_bg alpha(@foreground, 0.10);
+@define-color danger #ff7a90;
+
+* {
+    background-color: transparent;
+    color: @foreground;
+    font-family: 'JetBrainsMono Nerd Font';
+    font-size: 13px;
+    font-weight: 700;
+    border: none;
+    border-radius: 0;
+    outline: none;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+window#waybar {
+    background-color: transparent;
+    color: @foreground;
+}
+
+.modules-center {
+    background-color: @pill_bg;
+    border: 1px solid @pill_border;
+    border-radius: 999px;
+    padding: 0 14px;
+}
+
+#clock,
+#custom-spotify,
+#custom-apps,
+#custom-btop,
+#custom-volume,
+#bluetooth,
+#network,
+#custom-battery,
+#custom-screensaver {
+    min-height: 28px;
+    padding: 0 8px;
+}
+
+#clock {
+    color: @foreground;
+    font-weight: 900;
+}
+
+#custom-spotify {
+    color: @soft_fg;
+    padding-right: 12px;
+}
+
+#custom-spotify.inactive {
+    opacity: 0;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#workspaces {
+    padding: 0;
+    margin: 0 4px;
+}
+
+#workspaces button {
+    color: @muted_fg;
+    background-color: transparent;
+    margin: 5px 2px;
+    padding: 0 8px;
+    min-width: 18px;
+    border-radius: 999px;
+    transition: all 0.2s ease;
+}
+
+#workspaces button.empty {
+    color: alpha(@foreground, 0.28);
+}
+
+#workspaces button:hover {
+    color: @foreground;
+    background-color: @hover_bg;
+}
+
+#workspaces button.active {
+    color: @background;
+    background-color: @foreground;
+    min-width: 32px;
+    padding: 0 12px;
+}
+
+#custom-apps,
+#custom-btop,
+#custom-volume,
+#bluetooth,
+#network,
+#custom-battery,
+#custom-screensaver {
+    color: @soft_fg;
+}
+
+#custom-apps {
+    font-size: 15px;
+}
+
+#custom-btop,
+#custom-volume,
+#bluetooth,
+#network,
+#custom-battery,
+#custom-screensaver {
+    font-size: 14px;
+}
+
+#bluetooth.off,
+#bluetooth.disabled,
+#bluetooth.no-controller,
+#network.disconnected {
+    color: @muted_fg;
+}
+
+#custom-battery.warning,
+#custom-battery.critical {
+    color: @danger;
+}
+
+tooltip {
+    background: alpha(@background, 0.97);
+    border-radius: 12px;
+    border: 1px solid alpha(@foreground, 0.10);
+}
+
+tooltip label {
+    color: @foreground;
+}

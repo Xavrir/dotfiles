@@ -1,0 +1,1 @@
+/home/xavrir/.config/omarchy/current/theme/neovim.lua

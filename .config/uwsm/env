@@ -1,0 +1,22 @@
+# Changes require a restart to take effect.
+
+# Ensure Omarchy bins are in the path
+export OMARCHY_PATH=$HOME/.local/share/omarchy
+export PATH=$OMARCHY_PATH/bin:$PATH
+
+# Set default terminal and editor
+. "$HOME/.config/uwsm/default"
+
+# Activate mise if present on the system
+if omarchy-cmd-present mise >/dev/null 2>&1; then
+  __MISE_ACTIVATE_SH="$(mise activate sh 2>/dev/null || true)"
+  if [ -n "$__MISE_ACTIVATE_SH" ]; then
+    eval "$__MISE_ACTIVATE_SH"
+  fi
+  unset __MISE_ACTIVATE_SH
+fi
+
+# Input method environment (fcitx5)
+export XMODIFIERS=@im=fcitx
+export QT_IM_MODULE=fcitx
+export SDL_IM_MODULE=fcitx

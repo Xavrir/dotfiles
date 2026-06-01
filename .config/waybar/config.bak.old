@@ -1,0 +1,152 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 48,
+  "margin-top": 18,
+  "margin-left": 12,
+  "margin-right": 12,
+  "spacing": 0,
+  "fixed-center": true,
+  "reload_style_on_change": true,
+  "modules-left": [
+    "group/workspaces-bar",
+    "group/apps-window"
+  ],
+  "modules-center": [
+    "group/arch-center"
+  ],
+  "modules-right": [
+    "group/status-bar"
+  ],
+  "group/workspaces-bar": {
+    "orientation": "horizontal",
+    "modules": ["hyprland/workspaces"]
+  },
+  "hyprland/workspaces": {
+    "format": "{name}",
+    "on-click": "activate",
+    "all-outputs": false,
+    "persistent-workspaces": {
+      "*": 5
+    }
+  },
+  "group/apps-window": {
+    "orientation": "horizontal",
+    "modules": ["custom/apps", "hyprland/window"]
+  },
+  "custom/apps": {
+    "format": "󰣇",
+    "exec": "echo ''",
+    "interval": "once",
+    "on-click": "walker",
+    "on-click-right": "omarchy-menu power",
+    "tooltip": true,
+    "tooltip-format": "Apps (L) / Power (R)"
+  },
+  "hyprland/window": {
+    "format": "{}",
+    "max-length": 40,
+    "separate-outputs": true,
+    "rewrite": {
+      "(.*) - Mozilla Firefox": " $1",
+      "(.*) - Ghostty": " $1",
+      "(.*)": "$1"
+    }
+  },
+  "group/arch-center": {
+    "orientation": "horizontal",
+    "modules": ["custom/arch", "custom/spotify-sep", "custom/spotify"]
+  },
+  "custom/spotify-sep": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "sh -lc 'if playerctl -p spotify status >/dev/null 2>&1; then echo \"{\\\"text\\\":\\\"│\\\",\\\"class\\\":\\\"active\\\"}\"; else echo \"{\\\"text\\\":\\\"\\\",\\\"class\\\":\\\"inactive\\\"}\"; fi'",
+    "interval": 2,
+    "tooltip": false
+  },
+  "custom/spotify": {
+    "format": "{}",
+    "return-type": "json",
+    "exec": "python3 -c 'import json, subprocess\n\ndef run(args):\n    return subprocess.check_output(args, text=True).strip()\n\ntry:\n    status = run([\"playerctl\", \"-p\", \"spotify\", \"status\"])\nexcept Exception:\n    print(json.dumps({\"text\": \"\", \"class\": \"inactive\"}))\n    raise SystemExit(0)\n\nif status == \"Playing\":\n    title = run([\"playerctl\", \"-p\", \"spotify\", \"metadata\", \"--format\", \"{{title}}\"])\n    artist = run([\"playerctl\", \"-p\", \"spotify\", \"metadata\", \"--format\", \"{{artist}}\"])\n\n    if title and artist:\n        text = f\"{title} • {artist}\"\n        tooltip = text\n    elif title:\n        text = title\n        tooltip = title\n    else:\n        text = \"󰓇\"\n        tooltip = \"Spotify\"\n\n    print(json.dumps({\"text\": text, \"class\": \"active playing\", \"tooltip\": tooltip}))\nelse:\n    print(json.dumps({\"text\": \"󰓇\", \"class\": \"active idle\", \"tooltip\": \"Spotify\"}))'",
+    "interval": 2,
+    "max-length": 22,
+    "tooltip": true
+  },
+  "custom/arch": {
+    "format": "<span rise='-800'>{}</span>",
+    "escape": false,
+    "exec": "echo ''",
+    "interval": "once",
+    "tooltip": true,
+    "tooltip-format": "Arch Linux",
+    "on-click": "ghostty -e bash -lc 'fastfetch; exec bash'"
+  },
+   "group/status-bar": {
+    "orientation": "horizontal",
+    "modules": ["custom/btop", "custom/volume", "bluetooth", "network", "custom/battery", "clock"]
+  },
+  "custom/btop": {
+    "format": "{}",
+    "exec": "echo ''",
+    "interval": "once",
+    "on-click": "omarchy-launch-or-focus-tui btop",
+    "tooltip": true,
+    "tooltip-format": "btop"
+  },
+  "mpris": {
+    "format": "{player_icon}",
+    "format-paused": "{status_icon}",
+    "player-icons": {
+      "default": "",
+      "spotify": "󰓇",
+      "firefox": ""
+    },
+    "status-icons": {
+      "paused": "󰏤"
+    },
+    "on-click": "playerctl play-pause",
+    "tooltip-format": "{title} - {artist}"
+  },
+  "custom/volume": {
+    "format": "{}",
+    "exec": "pamixer --get-volume | awk '{if ($1 == 0) print \"󰝟\"; else if ($1 < 30) print \"󰕿\"; else if ($1 < 70) print \"󰖀\"; else print \"󰕾\"}'",
+    "interval": 2,
+    "on-click": "ghostty -e wiremix",
+    "on-click-right": "pamixer -t",
+    "on-scroll-up": "pamixer --allow-boost -i 2",
+    "on-scroll-down": "pamixer --allow-boost -d 2",
+    "tooltip": false
+  },
+  "network": {
+    "format-wifi": "󰖩",
+    "format-ethernet": "󱘖",
+    "format-disconnected": "󰖪",
+    "tooltip-format-wifi": "{essid}",
+    "interval": 5,
+    "on-click": "omarchy-launch-wifi"
+  },
+  "bluetooth": {
+    "format": "",
+    "format-disabled": "󰂲",
+    "format-on": "",
+    "format-off": "󰂲",
+    "format-connected": "󰂱",
+    "format-no-controller": "󰂲",
+    "tooltip-format": "Devices connected: {num_connections}",
+    "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "tooltip-format-no-controller": "No controller detected",
+    "on-click": "omarchy-launch-bluetooth"
+  },
+  "custom/battery": {
+    "exec": "~/.local/bin/waybar-battery",
+    "return-type": "json",
+    "interval": 30,
+    "on-click": "omarchy-menu power"
+  },
+  "clock": {
+    "format": "{:%H:%M}",
+    "format-alt": "{:%a %b %d}",
+    "tooltip-format": "<tt>{calendar}</tt>"
+  }
+}
